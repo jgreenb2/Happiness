@@ -29,6 +29,9 @@
                             <constraint firstItem="wJt-3B-2mU" firstAttribute="bottom" secondItem="uNI-bS-zuI" secondAttribute="top" id="wCN-E4-WHN"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="faceView" destination="wJt-3B-2mU" id="NFB-1I-UxU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tU6-OJ-vWa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

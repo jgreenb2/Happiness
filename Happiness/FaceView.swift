@@ -8,18 +8,24 @@
 
 import UIKit
 
+protocol FaceViewDataSource: class {   // delegate for smiliness data
+    func smilinessForFaceView(sender: FaceView) -> Double?
+}
+
+@IBDesignable
 class FaceView: UIView {
 
     var faceCenter: CGPoint {
         return convertPoint(center, fromCoordinateSpace: superview!)
     }
-    
+    @IBInspectable
     var scale: CGFloat = 0.9 { didSet { setNeedsDisplay() } }
     var faceRadius: CGFloat {
         return scale * min(bounds.size.height, bounds.size.width) / 2
     }
-    
+    @IBInspectable
     var lineWidth: CGFloat = 3 { didSet { setNeedsDisplay() } }
+    @IBInspectable
     var color: UIColor = UIColor.blueColor() { didSet { setNeedsDisplay() } }
 
     private struct Scaling {
@@ -70,6 +76,10 @@ class FaceView: UIView {
         
     }
     
+    weak var dataSource: FaceViewDataSource?    // delegate. weak because the delgate and the viewController are going to point
+                                                // to each other and form a cycle. To allow either to be freed via ARC we need to declare
+                                                // one of them as weak
+    
     override func drawRect(rect: CGRect) {
         let facePath = UIBezierPath(arcCenter: faceCenter, radius: faceRadius, startAngle: 0, endAngle: CGFloat(2*M_PI), clockwise: true)
         facePath.lineWidth = lineWidth
@@ -79,7 +89,8 @@ class FaceView: UIView {
         bezierPathForEye(.Left).stroke()
         bezierPathForEye(.Right).stroke()
         
-        let smiliness = 0.75
+        // ?? defines return val if nil
+        let smiliness = dataSource?.smilinessForFaceView(self) ?? 0.0
         let smilePath = bezierPathForSmile(smiliness)
         smilePath.stroke()
     }
