@@ -18,13 +18,17 @@ class FaceView: UIView {
     var faceCenter: CGPoint {
         return convertPoint(center, fromCoordinateSpace: superview!)
     }
+    
     @IBInspectable
     var scale: CGFloat = 0.9 { didSet { setNeedsDisplay() } }
+    
     var faceRadius: CGFloat {
         return scale * min(bounds.size.height, bounds.size.width) / 2
     }
+    
     @IBInspectable
     var lineWidth: CGFloat = 3 { didSet { setNeedsDisplay() } }
+    
     @IBInspectable
     var color: UIColor = UIColor.blueColor() { didSet { setNeedsDisplay() } }
 
